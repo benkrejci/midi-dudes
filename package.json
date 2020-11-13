@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "@benkrejci/led-dudes": "^1.0.0",
+    "color-convert": "^2.0.1",
+    "dayjs": "^1.9.3",
+    "lodash": "^4.17.20",
+    "serialport": "^9.0.2",
+    "terminal-kit": "^1.44.0"
+  },
+  "devDependencies": {
+    "@types/terminal-kit": "^1.28.2",
+    "@types/color-convert": "^1.9.0",
+    "@types/lodash": "^4.14.162",
+    "@types/serialport": "^8.0.1",
+    "tiny-typed-emitter": "^2.0.3"
+  }
+}

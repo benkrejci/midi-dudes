@@ -1,0 +1,37 @@
+export const LED_STRIP_LENGTH = 144
+export const LED_TYPE = 'dotstar'
+export const LED_REVERSE = true
+export const LED_NOTE_WIDTH = 1.4
+export const DEBUG = false
+export const DEBUG_TERMINAL_KIT = true
+export const DEBUG_INTERVAL = 300
+export const MIDI_NOTE_MIN = 27
+export const MIDI_NOTE_MAX = 100
+export const VELOCITY_MAX = 127
+export const VELOCITY_SCALE_POWER = 1
+export const TIME_SCALE = 2 / 1e5
+export const CURSOR_SATURATION = 72
+export const BACKGROUND_SATURATION = 100
+export const LOW_HIGH_HUE_OFFSET = 60
+export const BACKGROUND_MIN = 3
+export const BACKGROUND_MAX = 32
+export const GAMMA_CONSTANT = 1.2 // 2.2
+
+export const SPEED_MOVING_AVERAGE_PERIOD = 5e2 // sample notes over this period
+export const SPEED_NOTE_MIN = 54 // don't count bass notes towards speed calculation
+export const SPEED_MAX_RATE_DOWN = 5e-3
+export const SPEED_MAX_RATE_UP = 4e-4
+export const SPEED_HUE_EXP = 1.8
+export const SPEED_HUE_START = 0
+export const SPEED_HUE_END = 0.013
+export const SPEED_HUE_MIN = -2.2
+export const SPEED_HUE_MAX = SPEED_HUE_MIN - (5 / 3) * Math.PI
+export const MAX_FRAME_RATE = 200
+export const MAX_RATE_OF_CHANGE_UP_DEFAULT = 1e-2
+export const MAX_RATE_OF_CHANGE_DOWN_DEFAULT = 2e-4
+
+export const ATTACK = 100
+export const DECAY = 3000
+export const SUSTAIN = 0.1
+export const RELEASE = 200
+export const ENVELOPE_POWER = 2

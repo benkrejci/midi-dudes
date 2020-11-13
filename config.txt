@@ -1,0 +1,4 @@
+# put this at the bottom of /boot/confit.txt to enable midi on uart serial
+enable_uart=1
+dtoverlay=pi3-miniuart-bt
+dtoverlay=midi-uart0
