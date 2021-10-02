@@ -2,7 +2,7 @@ import _, { get } from 'lodash'
 import { terminal } from 'terminal-kit'
 import convert from 'color-convert'
 
-import { getLedController } from '@benkrejci/led-dudes/dist/led-controller'
+import { getLedController } from '@benkrejci/led-dudes/led-controller'
 import { ActiveNote, MidiInput } from './MidiInput'
 import * as color from './utility/color'
 import * as leds from './utility/leds'
