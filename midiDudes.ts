@@ -2,7 +2,7 @@ import _, { get } from 'lodash'
 import { terminal } from 'terminal-kit'
 import convert from 'color-convert'
 
-import { getLedController } from '@benkrejci/led-dudes/led-controller'
+import { getLedController } from '@benkrejci/led-dudes/dist/led-controller'
 import { ActiveNote, MidiInput } from './MidiInput'
 import * as color from './utility/color'
 import * as leds from './utility/leds'
@@ -51,8 +51,6 @@ const ledController = getLedController({
 })
 const midiInput = MidiInput.create()
 
-//midiInput.on('log', (level, message, ...args) => console[level](message, ...args))
-
 export interface CurveParams {
     scale?: number
     sigmoid?: number
@@ -61,27 +59,21 @@ export interface CurveParams {
 
 interface MoodListItem {
     activeNote: ActiveNote
-    //previous?: MoodListItem
     next?: MoodListItem
 }
 let moodListFirst: MoodListItem | undefined
 let moodListLast: MoodListItem | undefined
-//const moodMap: Map<number, MoodListItem> = new Map()
 const addMoodItem = (activeNote: ActiveNote) => {
     if (!moodListFirst || !moodListLast) {
         moodListFirst = moodListLast = { activeNote }
     } else {
-        moodListLast.next = { activeNote } //, previous: moodListLast }
+        moodListLast.next = { activeNote },
         moodListLast = moodListLast.next
     }
-    // moodMap.set(activeNote.note, moodListLast)
 }
 const removeMoodItem = (moodItem: MoodListItem) => {
     if (!moodItem || moodItem !== moodListFirst) return
     moodListFirst = moodListFirst.next
-    // if (moodItem.previous) moodItem.previous.next = moodItem.next
-    // if (moodItem.next) moodItem.next.previous = moodItem.previous
-    // moodMap.delete(note)
 }
 
 export let activeNotes: Map<number, EnvelopedNote> = new Map()
@@ -97,10 +89,15 @@ midiInput.on('remove', (activeNote) => {
     const releasableNote = activeNotes.get(activeNote.note)
     if (releasableNote)
         releasableNote.stopTime = Number(process.hrtime.bigint()) / 1e6
-    // removeMoodItem(activeNote.note)
 })
 
-type MoodParam = 'force' | 'speed' | 'lows' | 'highs'
+type MoodParam = 
+    // | 'force'
+    | 'forceScale'
+    | 'forceHue'
+    // | 'speed'
+    | 'lows'
+    | 'highs'
 
 type MoodParams<T = number> = Record<MoodParam, T>
 
@@ -132,13 +129,13 @@ interface MoodConfig {
 
 const MOOD_CONFIGS: MoodConfig[] = [
     {
-        name: 'force',
+        name: 'forceScale',
         type: 'backgroundScale',
-        movingAveragePeriod: 20 * 1000,
+        movingAveragePeriod: 2 * 1000,
         reduceMoodListItem: (
             total,
             currentItem,
-            lastItem,
+            _lastItem,
             timeLeftInPeriod: number,
             config: MoodConfig
         ) =>
@@ -151,32 +148,58 @@ const MOOD_CONFIGS: MoodConfig[] = [
         getValue: (total) => curves.parabolic(total, 3, 0.3, 0.9, 0.2, 1),
     },
     {
-        name: 'speed',
+        name: 'forceHue',
         type: 'hue',
-        noLimit: true,
-        movingAveragePeriod: constants.SPEED_MOVING_AVERAGE_PERIOD,
+        movingAveragePeriod: 20 * 1000,
         maxRateOfChangeDown: constants.SPEED_MAX_RATE_DOWN,
         maxRateOfChangeUp: constants.SPEED_MAX_RATE_UP,
-        reduceMoodListItem: (total, currentItem, lastItem) =>
-            total +
-            (currentItem.activeNote.note > constants.SPEED_NOTE_MIN &&
-            (!lastItem ||
-                currentItem.activeNote.startTime -
-                    lastItem.activeNote.startTime >
-                    30)
-                ? 1
-                : 0),
-        getValue: (total, config, t) =>
-            curves.parabolic(
-                total / config.movingAveragePeriod,
-                constants.SPEED_HUE_EXP,
-                constants.SPEED_HUE_START,
-                constants.SPEED_HUE_END,
-                constants.SPEED_HUE_MIN,
-                constants.SPEED_HUE_MAX
+        reduceMoodListItem: (
+            total,
+            currentItem,
+            _lastItem,
+            timeLeftInPeriod: number,
+            config: MoodConfig
+        ) =>
+            Math.max(
+                total,
+                (currentItem.activeNote.velocity / constants.VELOCITY_MAX) *
+                    (timeLeftInPeriod / config.movingAveragePeriod)
             ),
-        //TIME_SCALE * t,
+        getValue: (total) => curves.parabolic(
+                total,
+                constants.FORCE_HUE_EXP,
+                constants.FORCE_HUE_START,
+                constants.FORCE_HUE_END,
+                constants.FORCE_HUE_MIN,
+                constants.FORCE_HUE_MAX
+            ),
     },
+    // {
+    //     name: 'speed',
+    //     type: 'hue',
+    //     noLimit: true,
+    //     movingAveragePeriod: constants.SPEED_MOVING_AVERAGE_PERIOD,
+    //     maxRateOfChangeDown: constants.SPEED_MAX_RATE_DOWN,
+    //     maxRateOfChangeUp: constants.SPEED_MAX_RATE_UP,
+    //     reduceMoodListItem: (total, currentItem, lastItem) =>
+    //         total +
+    //         (currentItem.activeNote.note > constants.SPEED_NOTE_MIN &&
+    //         (!lastItem ||
+    //             currentItem.activeNote.startTime -
+    //                 lastItem.activeNote.startTime >
+    //                 30)
+    //             ? 1
+    //             : 0),
+    //     getValue: (total, config, _t) =>
+    //         curves.parabolic(
+    //             total / config.movingAveragePeriod,
+    //             constants.SPEED_HUE_EXP,
+    //             constants.SPEED_HUE_START,
+    //             constants.SPEED_HUE_END,
+    //             constants.SPEED_HUE_MIN,
+    //             constants.SPEED_HUE_MAX
+    //         ),
+    // },
     {
         name: 'lows',
         type: 'background',
@@ -185,7 +208,7 @@ const MOOD_CONFIGS: MoodConfig[] = [
         reduceMoodListItem: (
             total,
             currentItem,
-            lastItem,
+            _lastItem,
             timeLeftInPeriod,
             config
         ) =>
@@ -205,7 +228,7 @@ const MOOD_CONFIGS: MoodConfig[] = [
         reduceMoodListItem: (
             total,
             currentItem,
-            lastItem,
+            _lastItem,
             timeLeftInPeriod,
             config
         ) =>
@@ -224,8 +247,10 @@ const moodConfigWithNoteIndex = MOOD_CONFIGS.filter(
 )
 
 let lastMoodParams: MoodParams = {
-    force: 0,
-    speed: 0,
+    // force: 0,
+    forceScale: 0,
+    forceHue: 0,
+    // speed: 0,
     lows: 0,
     highs: 0,
 }
@@ -246,8 +271,10 @@ const getMood = (t: number): Mood => {
 
     let currentItem = moodListFirst
     const totals: MoodParams = {
-        force: 0,
-        speed: 0,
+        // force: 0,
+        forceScale: 0,
+        forceHue: 0,
+        // speed: 0,
         lows: 0,
         highs: 0,
     }
@@ -326,10 +353,6 @@ const getMood = (t: number): Mood => {
     backgroundRgb = color.defaultBlendRgb(
         backgroundRgb,
         BACKGROUND_DEFAULT_RGB
-        // color.rotateHue(
-        //     BACKGROUND_DEFAULT_RGB,
-        //     color.getHueMatrix(t * constants.TIME_SCALE)
-        // )
     )
 
     return {

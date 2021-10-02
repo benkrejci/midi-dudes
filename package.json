@@ -5,7 +5,7 @@
     "dayjs": "^1.10.7",
     "lodash": "^4.17.21",
     "serialport": "^9.2.4",
-    "terminal-kit": "^2.1.6"
+    "terminal-kit": "^1.49.4"
   },
   "devDependencies": {
     "@types/color-convert": "^2.0.0",

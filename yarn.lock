@@ -209,7 +209,7 @@ chownr@^1.1.1:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.4.tgz#6fc9d7b42d32a583596337666e7d08084da2cc6b"
   integrity sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==
 
-chroma-js@^2.1.0, chroma-js@^2.1.2:
+chroma-js@^2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-2.1.2.tgz#1075cb9ae25bcb2017c109394168b5cf3aa500ec"
   integrity sha512-ri/ouYDWuxfus3UcaMxC1Tfp3IE9K5iQzxc2hSxbBRVNQFut1UuGAsZmiAf2mOUubzGJwgMSv9lHg+XqLaz1QQ==
@@ -488,7 +488,7 @@ ndarray@^1.0.13, ndarray@^1.0.19:
     iota-array "^1.0.0"
     is-buffer "^1.0.2"
 
-nextgen-events@^1.3.4, nextgen-events@^1.4.0:
+nextgen-events@^1.3.4:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/nextgen-events/-/nextgen-events-1.5.2.tgz#72b2b6cbe6912d9be2165188d0169027e65d8ebe"
   integrity sha512-0ZEIRQywH5Oxt2IYYufRltQg/KjXhKM7f7MHve+ZIRaKnIR1PPYEXAl2WBmej5Sf0Qh2GgE/21sMRZVuOyxLzw==
@@ -720,11 +720,6 @@ string-kit@^0.11.9:
   resolved "https://registry.yarnpkg.com/string-kit/-/string-kit-0.11.10.tgz#1716b896a5077b2e3e856e409307d4f2e8999adc"
   integrity sha512-ATVmIpMrqxPFNiNQTnmEeXzt3743O6DubJWh2MiAQV1ifKd4PcCjBcybCdb0ENnPO1T6asORK9nOpygn1BATag==
 
-string-kit@^0.12.5:
-  version "0.12.8"
-  resolved "https://registry.yarnpkg.com/string-kit/-/string-kit-0.12.8.tgz#6b35b3d873105c4b194757ecd66b0723ffb914af"
-  integrity sha512-9UYXBbe/reAZI6cKiaNC7zEzdmA91Ih5/lVmbPGoMssSWZfqVcQvqAMlL0dTdMn+a7XCXBe8zV4BVopXlf+Aaw==
-
 string-width@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-1.0.2.tgz#118bdf5b8cdc51a2a7e70d211e07e2b0b9b107d3"
@@ -812,7 +807,7 @@ tar-stream@^2.1.4:
     inherits "^2.0.3"
     readable-stream "^3.1.1"
 
-terminal-kit@^1.43.0:
+terminal-kit@^1.43.0, terminal-kit@^1.49.4:
   version "1.49.4"
   resolved "https://registry.yarnpkg.com/terminal-kit/-/terminal-kit-1.49.4.tgz#11493f51032af6036ebe15ede19617f5d7e2f7ef"
   integrity sha512-ehoNOk7xB/QBVX38P2kpoLip+s4Tlb6qYDBAoLg/rdRrrtRlDgs97a9MG0xU1IGq/Qpn47n1rwb5fWbM/Bprag==
@@ -824,20 +819,6 @@ terminal-kit@^1.43.0:
     nextgen-events "^1.3.4"
     seventh "^0.7.40"
     string-kit "^0.11.9"
-    tree-kit "^0.7.0"
-
-terminal-kit@^2.1.6:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/terminal-kit/-/terminal-kit-2.1.6.tgz#4fc12bd44fcf637183b66f6770299f6b17fb3b1d"
-  integrity sha512-BX8flJ97GG5s0g0rtLkqBYwg8LT9RhJ6DFpUAf3oZYmUPOO3aj5xktT+ys5Mg5Ot1/efvDbf9hcNfRz1ioEFvA==
-  dependencies:
-    "@cronvel/get-pixels" "^3.4.0"
-    chroma-js "^2.1.2"
-    lazyness "^1.2.0"
-    ndarray "^1.0.19"
-    nextgen-events "^1.4.0"
-    seventh "^0.7.40"
-    string-kit "^0.12.5"
     tree-kit "^0.7.0"
 
 tiny-typed-emitter@^2.1.0:
